@@ -1,1 +1,113 @@
-[Your updated HTML content with all JavaScript syntax fixes applied]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Interactive Math Learning Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .quiz-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            background: #e4e4e4;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .options li:hover {
+            background: #d4d4d4;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Math Quiz</h1>
+        <div class="question" id="question"></div>
+        <ul class="options" id="options"></ul>
+        <button id="next" style="display: none;">Next Question</button>
+        <div id="result" style="margin-top: 20px;"></div>
+    </div>
+    <script>
+        const questions = [
+            {
+                question: "What is 5 + 7?",
+                options: ["10", "12", "14", "16"],
+                answer: "12"
+            },
+            {
+                question: "What is 8 * 7?",
+                options: ["54", "56", "58", "60"],
+                answer: "56"
+            },
+            {
+                question: "What is 9 - 3?",
+                options: ["5", "6", "7", "8"],
+                answer: "6"
+            }
+        ];
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const questionElement = document.getElementById('question');
+            const optionsElement = document.getElementById('options');
+            questionElement.textContent = questions[currentQuestion].question;
+            optionsElement.innerHTML = '';
+            questions[currentQuestion].options.forEach(option => {
+                const li = document.createElement('li');
+                li.textContent = option;
+                li.onclick = () => selectOption(option);
+                optionsElement.appendChild(li);
+            });
+        }
+
+        function selectOption(option) {
+            if (option === questions[currentQuestion].answer) {
+                score++;
+            }
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = `You scored ${score} out of ${questions.length}`;
+            const nextButton = document.getElementById('next');
+            nextButton.style.display = 'none';
+        }
+
+        document.getElementById('next').onclick = () => {
+            currentQuestion++;
+            loadQuestion();
+            document.getElementById('next').style.display = 'none';
+        };
+
+        loadQuestion();
+    </script>
+</body>
+</html>
