@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .quiz { margin: 20px 0; }
+        .result { font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Simple Math Quiz</h1>
+    <div class="quiz">
+        <label for="question">What is 5 + 3?</label>
+        <input type="number" id="answer" placeholder="Your answer">
+        <button onclick="checkAnswer()">Submit</button>
+    </div>
+    <div class="result" id="result"></div>
+
+    <script>
+        function checkAnswer() {
+            const answer = document.getElementById('answer').value;
+            const resultDiv = document.getElementById('result');
+            if (parseInt(answer) === 8) {
+                resultDiv.innerText = 'Correct!';
+                resultDiv.style.color = 'green';
+            } else {
+                resultDiv.innerText = 'Incorrect, try again!';
+                resultDiv.style.color = 'red';
+            }
+        }
+    </script>
+</body>
+</html>
