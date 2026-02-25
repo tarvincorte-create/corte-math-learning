@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corte Math | Interactive Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1a73e8;
+            --secondary-green: #34a853;
+            --accent-orange: #ea8600;
+            --accent-yellow: #fbbc04;
+            --bg-light: #f8f9fa;
+            --bg-white: #ffffff;
+            --text-dark: #202124;
+            --text-medium: #5f6368;
+            --border-color: #dadce0;
+            --success-green: #0f9d58;
+            --error-red: #d93025;
+            --card-shadow: 0 1px 3px rgba(60,64,67,0.15);
+            --card-shadow-hover: 0 4px 12px rgba(60,64,67,0.2);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #4285f4 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(26,115,232,0.3);
+        }
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary-blue);
+        }
+        .logo-text {
+            font-size: 24px;
+            font-weight: 800;
+        }
+        .logo-text span { color: var(--accent-yellow); }
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.15);
+            border-radius: 24px;
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 14px;
+            width: 180px;
+            outline: none;
+        }
+        .search-box input::placeholder { color: rgba(255,255,255,0.7); }
+        .sort-select {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: white;
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .sort-select option { background: var(--primary-blue); }
+        .header-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .header-btn:hover { background: rgba(255,255,255,0.3); }
+        /* Progress Section */
+        .progress-section {
+            background: rgba(0,0,0,0.1);
+            padding: 10px 24px;
+        }
+        .progress-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .progress-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+        .progress-bar-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 200px;
+        }
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-yellow);
+            border-radius: 4px;
+            width: 68%;
+        }
+        .streak-badge {
+            background: var(--accent-orange);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--secondary-green);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .section-count {
+            background: var(--bg-light);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: var(--text-medium);
+        }
+        .zones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .zone-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .zone-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--primary-blue);
+        }
+        .zone-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            background: var(--bg-light);
+        }
+        .zone-card-info {
+            padding: 10px;
+            text-align: center;
+        }
+        .zone-card-name {
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.3;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .zone-card-badge {
+            display: inline-block;
+            background: var(--secondary-green);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-top: 4px;
+        }
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 24px 0;
+        }
+        .loading, .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-medium);
+        }
+        /* Zone Viewer */
+        .zone-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-light);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+        .zone-viewer.active { display: flex; }
+        .zone-viewer-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #4285f4 100%);
+            color: white;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .zone-viewer-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .zone-viewer-author {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+        .zone-viewer-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .zone-viewer-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .zone-viewer-btn:hover { background: rgba(255,255,255,0.3); }
+        .zone-frame-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: #1a1a1a;
+        }
+        .zone-frame {
+            width: 95%;
+            height: 95%;
+            border: none;
+            border-radius: 8px;
+            background: white;
+        }
+        /* Popup */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .popup-overlay.active { display: flex; }
+        .popup {
+            background: var(--bg-white);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            max-height: 80vh;
+            overflow: hidden;
+        }
+        .popup-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #4285f4 100%);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .popup-title { font-size: 18px; font-weight: 700; }
+        .popup-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .popup-body { padding: 20px; overflow-y: auto; }
+        .settings-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: var(--bg-light);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+        .settings-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+        .input-group { margin-bottom: 16px; }
+        .input-label { display: block; font-weight: 600; margin-bottom: 6px; }
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        /* Footer */
+        .footer {
+            background: var(--bg-white);
+            border-top: 1px solid var(--border-color);
+            padding: 20px;
+            text-align: center;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .footer-link {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        /* Math Practice Overlay */
+        .math-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-light);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+        }
+        .math-overlay.active { display: flex; }
+        .math-header {
+            background: linear-gradient(135deg, var(--secondary-green) 0%, #45b465 100%);
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .math-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .math-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .math-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--secondary-green);
+        }
+        .math-logo-text { font-size: 22px; font-weight: 800; }
+        .math-subject-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .math-header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .math-progress-info {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+        }
+        .math-exit-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .math-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        .math-sidebar {
+            width: 280px;
+            background: var(--bg-white);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .student-card {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #4285f4 100%);
+            border-radius: 12px;
+            padding: 16px;
+            color: white;
+            margin-bottom: 20px;
+        }
+        .student-avatar {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        .student-name { font-size: 18px; font-weight: 700; }
+        .student-class { font-size: 13px; opacity: 0.9; }
+        .skill-progress { margin-top: 16px; }
+        .skill-item { margin-bottom: 12px; }
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        .skill-bar {
+            height: 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .skill-fill {
+            height: 100%;
+            background: var(--accent-yellow);
+            border-radius: 3px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .stat-card {
+            background: var(--bg-light);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary-blue);
+        }
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-medium);
+            font-weight: 600;
+        }
+        .math-problem-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        .problem-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .problem-topic {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .topic-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-orange) 0%, #f5a623 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        .topic-info h2 { font-size: 20px; font-weight: 700; margin: 0 0 4px 0; }
+        .topic-info p { font-size: 14px; color: var(--text-medium); margin: 0; }
+        .problem-dots { display: flex; gap: 6px; }
+        .problem-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border-color);
+        }
+        .problem-dot.correct { background: var(--success-green); }
+        .problem-dot.wrong { background: var(--error-red); }
+        .problem-dot.current {
+            background: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(26,115,232,0.3);
+        }
+        .problem-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 32px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .problem-question {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        .problem-equation {
+            background: var(--bg-light);
+            padding: 24px;
+            border-radius: 12px;
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 24px;
+            font-family: 'Cambria Math', serif;
+        }
+        .feedback-message {
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+        .feedback-message.correct {
+            background: rgba(15,157,88,0.1);
+            color: var(--success-green);
+            border: 1px solid var(--success-green);
+        }
+        .feedback-message.wrong {
+            background: rgba(217,48,37,0.1);
+            color: var(--error-red);
+            border: 1px solid var(--error-red);
+        }
+        .answer-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .answer-option {
+            background: var(--bg-white);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+        .answer-option:hover {
+            border-color: var(--primary-blue);
+            background: rgba(26,115,232,0.05);
+        }
+        .answer-option.selected {
+            border-color: var(--primary-blue);
+            background: rgba(26,115,232,0.1);
+        }
+        .answer-option.correct {
+            border-color: var(--success-green);
+            background: rgba(15,157,88,0.1);
+        }
+        .answer-option.wrong {
+            border-color: var(--error-red);
+            background: rgba(217,48,37,0.1);
+        }
+        .answer-option.disabled { pointer-events: none; }
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-medium);
+        }
+        .answer-option.selected .option-letter { background: var(--primary-blue); color: white; }
+        .answer-option.correct .option-letter { background: var(--success-green); color: white; }
+        .answer-option.wrong .option-letter { background: var(--error-red); color: white; }
+        .problem-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 24px;
+        }
+        .hint-btn {
+            background: var(--bg-light);
+            border: 2px solid var(--border-color);
+            color: var(--text-medium);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .hint-btn:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
+        .submit-btn {
+            background: linear-gradient(135deg, var(--secondary-green) 0%, #45b465 100%);
+            border: none;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(52,168,83,0.3); }
+        .submit-btn:disabled { background: var(--border-color); cursor: not-allowed; transform: none; }
+        @media (max-width: 900px) {
+            .math-sidebar { display: none; }
+        }
+        @media (max-width: 768px) {
+            .header-top { flex-direction: column; }
+            .answer-options { grid-template-columns: 1fr; }
+            .math-header { flex-direction: column; }
+            .problem-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="logo-section">
+                <div class="logo-icon">C</div>
+                <div class="logo-text">Corte <span>Math</span></div>
+            </div>
+            <div class="header-controls">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search activities..." oninput="filterZones()">
+                </div>
+                <select class="sort-select" id="sortSelect" onchange="sortZones()">
+                    <option value="popular">Most Popular</option>
+                    <option value="name">Name (A-Z)</option>
+                    <option value="id">Recently Added</option>
+                </select>
+                <button class="header-btn" onclick="openPopup('settings')">⚙️ Settings</button>
+            </div>
+        </div>
+        <div class="progress-section">
+            <div class="progress-content">
+                <div class="progress-item">⭐ <span id="xpDisplay">1250</span> XP</div>
+                <div class="progress-bar-container">
+                    <span>Today's Progress</span>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <span>68%</span>
+                </div>
+                <div class="streak-badge">🔥 <span id="streakDisplay">3</span> Day Streak</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section>
+            <div class="section-header">
+                <div class="section-icon">⭐</div>
+                <h2 class="section-title">Featured Activities</h2>
+                <span class="section-count" id="featuredCount">0</span>
+            </div>
+            <div class="zones-grid" id="featuredZones"></div>
+        </section>
+        <hr class="section-divider">
+        <section>
+            <div class="section-header">
+                <div class="section-icon" style="background:var(--primary-blue)">📚</div>
+                <h2 class="section-title">All Activities</h2>
+                <span class="section-count" id="allCount">0</span>
+            </div>
+            <div class="zones-grid" id="allZones">
+                <div class="loading">Loading activities...</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <span class="footer-link" onclick="openPopup('contact')">Contact</span>
+            <span class="footer-link" onclick="openPopup('privacy')">Privacy Policy</span>
+            <span class="footer-link" onclick="exportData()">Export Data</span>
+        </div>
+    </footer>
+
+    <!-- Zone Viewer -->
+    <div class="zone-viewer" id="zoneViewer">
+        <div class="zone-viewer-header">
+            <div>
+                <div class="zone-viewer-title" id="zoneTitle">Zone</div>
+                <div class="zone-viewer-author" id="zoneAuthor">by Author</div>
+            </div>
+            <div class="zone-viewer-controls">
+                <button class="zone-viewer-btn" onclick="fullscreenZone()">Fullscreen</button>
+                <button class="zone-viewer-btn" onclick="openInNewTab()">New Tab</button>
+                <button class="zone-viewer-btn" onclick="downloadZone()">Download</button>
+                <button class="zone-viewer-btn" onclick="closeZone()">Close</button>
+            </div>
+        </div>
+        <div class="zone-frame-container">
+            <iframe id="zoneFrame" class="zone-frame"></iframe>
+        </div>
+    </div>
+
+    <!-- Popup -->
+    <div class="popup-overlay" id="popupOverlay" onclick="closePopup()">
+        <div class="popup" onclick="event.stopPropagation()">
+            <div class="popup-header">
+                <div class="popup-title" id="popupTitle">Title</div>
+                <button class="popup-close" onclick="closePopup()">×</button>
+            </div>
+            <div class="popup-body" id="popupBody"></div>
+        </div>
+    </div>
+
+    <!-- Math Practice Overlay -->
+    <div class="math-overlay" id="mathOverlay">
+        <div class="math-header">
+            <div class="math-header-left">
+                <div class="math-logo">
+                    <div class="math-logo-icon">∑</div>
+                    <div class="math-logo-text">Corte Math</div>
+                </div>
+                <span class="math-subject-badge">7th Grade Algebra</span>
+            </div>
+            <div class="math-header-right">
+                <div class="math-progress-info">
+                    <span>⭐ <span id="mathScore">0</span> pts</span>
+                    <span>🔥 <span id="mathStreak">3</span> streak</span>
+                    <span><span id="problemNum">1</span> / 10</span>
+                </div>
+                <button class="math-exit-btn" onclick="closeMathPractice()">Exit Practice</button>
+            </div>
+        </div>
+        <div class="math-content">
+            <div class="math-sidebar">
+                <div class="student-card">
+                    <div class="student-avatar">👤</div>
+                    <div class="student-name">Alex Johnson</div>
+                    <div class="student-class">7th Grade - Period 3</div>
+                    <div class="skill-progress">
+                        <div class="skill-item">
+                            <div class="skill-header"><span>Equations</span><span>78%</span></div>
+                            <div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-header"><span>Expressions</span><span>65%</span></div>
+                            <div class="skill-bar"><div class="skill-fill" style="width:65%"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-header"><span>Inequalities</span><span>52%</span></div>
+                            <div class="skill-bar"><div class="skill-fill" style="width:52%"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-value" id="totalXp">1250</div><div class="stat-label">Total XP</div></div>
+                    <div class="stat-card"><div class="stat-value">24</div><div class="stat-label">Problems</div></div>
+                    <div class="stat-card"><div class="stat-value">87%</div><div class="stat-label">Accuracy</div></div>
+                    <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">Lessons</div></div>
+                </div>
+            </div>
+            <div class="math-problem-area">
+                <div class="problem-header">
+                    <div class="problem-topic">
+                        <div class="topic-icon">📐</div>
+                        <div class="topic-info">
+                            <h2 id="topicTitle">Solving Equations</h2>
+                            <p>Master this skill to level up!</p>
+                        </div>
+                    </div>
+                    <div class="problem-dots" id="problemDots"></div>
+                </div>
+                <div class="problem-card">
+                    <div id="feedbackArea"></div>
+                    <p class="problem-question" id="questionText">Solve for x:</p>
+                    <div class="problem-equation" id="equationText">3x + 7 = 22</div>
+                    <div id="hintArea"></div>
+                    <div class="answer-options" id="answerOptions"></div>
+                    <div class="problem-actions">
+                        <button class="hint-btn" id="hintBtn" onclick="toggleHint()">💡 Show Hint</button>
+                        <button class="submit-btn" id="submitBtn" onclick="submitAnswer()" disabled>Check Answer →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data URLs
+        const ZONES_URL = "https://cdn.jsdelivr.net/gh/gn-math/assets@main/zones.json";
+        const COVER_URL = "https://cdn.jsdelivr.net/gh/gn-math/covers@main";
+        const HTML_URL = "https://cdn.jsdelivr.net/gh/gn-math/html@main";
+
+        // Math Problems
+        const MATH_PROBLEMS = [
+            { id: 1, topic: "Solving Equations", question: "Solve for x:", equation: "3x + 7 = 22", options: ["x = 5", "x = 7", "x = 4", "x = 6"], correct: 0, hint: "Subtract 7 from both sides, then divide by 3." },
+            { id: 2, topic: "Two-Step Equations", question: "Find the value of y:", equation: "2y - 8 = 12", options: ["y = 2", "y = 10", "y = 4", "y = 8"], correct: 1, hint: "Add 8 to both sides, then divide by 2." },
+            { id: 3, topic: "Combining Like Terms", question: "Simplify the expression:", equation: "4x + 3 + 2x - 5", options: ["6x - 2", "6x + 8", "2x - 2", "4x - 2"], correct: 0, hint: "Combine x terms and constants separately." },
+            { id: 4, topic: "Distributive Property", question: "Expand and simplify:", equation: "3(2x + 4)", options: ["6x + 4", "5x + 7", "6x + 12", "2x + 12"], correct: 2, hint: "Multiply 3 by each term inside parentheses." },
+            { id: 5, topic: "Solving Inequalities", question: "Solve the inequality:", equation: "x + 5 > 12", options: ["x > 7", "x < 7", "x > 17", "x < 17"], correct: 0, hint: "Subtract 5 from both sides." },
+            { id: 6, topic: "Proportions", question: "Solve for n:", equation: "n/4 = 15/20", options: ["n = 3", "n = 5", "n = 4", "n = 6"], correct: 0, hint: "Cross multiply: 20n = 4 × 15" },
+            { id: 7, topic: "Percent Equations", question: "What is 25% of 80?", equation: "0.25 × 80 = ?", options: ["15", "20", "25", "30"], correct: 1, hint: "Convert 25% to 0.25 and multiply." },
+            { id: 8, topic: "Writing Expressions", question: "Write: '5 more than twice a number'", equation: "Let the number be x", options: ["5 + 2x", "5x + 2", "2(x + 5)", "5(x + 2)"], correct: 0, hint: "'Twice' = 2x, '5 more' = add 5." },
+            { id: 9, topic: "Variables Both Sides", question: "Solve for x:", equation: "5x + 3 = 2x + 15", options: ["x = 4", "x = 6", "x = 3", "x = 5"], correct: 0, hint: "Subtract 2x from both sides first." },
+            { id: 10, topic: "Negative Coefficients", question: "Solve for x:", equation: "-2x + 10 = 4", options: ["x = -3", "x = 3", "x = 7", "x = -7"], correct: 1, hint: "Subtract 10, then divide by -2." }
+        ];
+
+        // State
+        let zones = [];
+        let filteredZones = [];
+        let popularityData = {};
+        let activeZone = null;
+        let currentProblem = 0;
+        let selectedAnswer = null;
+        let showFeedback = false;
+        let problemResults = [];
+        let score = 0;
+        let streak = 3;
+        let xpPoints = 1250;
+        let hintVisible = false;
+
+        // Load zones
+        async function loadZones() {
+            try {
+                const [zonesRes, popRes] = await Promise.all([
+                    fetch(ZONES_URL + "?t=" + Date.now()),
+                    fetch("https://data.jsdelivr.com/v1/stats/packages/gh/gn-math/html@main/files?period=year")
+                ]);
+                zones = await zonesRes.json();
+                if (zones.length > 0) zones[0].featured = true;
+                
+                const popData = await popRes.json();
+                popData.forEach(f => {
+                    const m = f.name.match(/\/(\\d+)\.html$/);
+                    if (m) popularityData[parseInt(m[1])] = f.hits.total;
+                });
+                
+                sortZones();
+            } catch (e) {
+                document.getElementById('allZones').innerHTML = '<div class="empty-state">Error loading zones</div>';
+            }
+        }
+
+        function sortZones() {
+            const sortBy = document.getElementById('sortSelect').value;
+            filteredZones = [...zones];
+            
+            if (sortBy === 'name') filteredZones.sort((a,b) => a.name.localeCompare(b.name));
+            else if (sortBy === 'id') filteredZones.sort((a,b) => a.id - b.id);
+            else filteredZones.sort((a,b) => (popularityData[b.id]||0) - (popularityData[a.id]||0));
+            
+            filteredZones.sort((a,b) => a.id === -1 ? -1 : b.id === -1 ? 1 : 0);
+            filterZones();
+        }
+
+        function filterZones() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = q ? filteredZones.filter(z => z.name.toLowerCase().includes(q)) : filteredZones;
+            
+            const featured = filtered.filter(z => z.featured);
+            document.getElementById('featuredCount').textContent = featured.length;
+            document.getElementById('featuredZones').innerHTML = featured.map(renderCard).join('');
+            
+            document.getElementById('allCount').textContent = filtered.length;
+            document.getElementById('allZones').innerHTML = filtered.length ? filtered.map(renderCard).join('') : '<div class="empty-state">No activities found</div>';
+        }
+
+        function renderCard(zone) {
+            const cover = zone.cover.replace(""){COVER_URL}"}, COVER_URL.replace("{HTML_URL}", HTML_URL);
+            return `<div class="zone-card" onclick="openZone(${zone.id})">
+                <img src="${cover}" alt="${zone.name}" loading="lazy">
+                <div class="zone-card-info">
+                    <div class="zone-card-name">${zone.name}</div>
+                    ${zone.featured ? '<span class="zone-card-badge">Featured</span>' : ''}
+                </div>
+            </div>`;
+        }
+
+        async function openZone(id) {
+            const zone = zones.find(z => z.id === id);
+            if (!zone) return;
+            
+            if (zone.url.startsWith('http')) {
+                window.open(zone.url, '_blank');
+                return;
+            }
+            
+            activeZone = zone;
+            const url = zone.url.replace(""){COVER_URL}"}, COVER_URL.replace("{HTML_URL}", HTML_URL);
+            
+            try {
+                const res = await fetch(url + "?t=" + Date.now());
+                const html = await res.text();
+                document.getElementById('zoneTitle').textContent = zone.name;
+                document.getElementById('zoneAuthor').textContent = 'by ' + zone.author;
+                const frame = document.getElementById('zoneFrame');
+                frame.contentDocument.open();
+                frame.contentDocument.write(html);
+                frame.contentDocument.close();
+                document.getElementById('zoneViewer').classList.add('active');
+            } catch (e) {
+                alert('Failed to load: ' + e);
+            }
+        }
+
+        function closeZone() {
+            document.getElementById('zoneViewer').classList.remove('active');
+            activeZone = null;
+        }
+
+        function fullscreenZone() {
+            document.getElementById('zoneFrame').requestFullscreen?.();
+        }
+
+        async function openInNewTab() {
+            if (!activeZone) return;
+            const url = activeZone.url.replace(""){COVER_URL}"}, COVER_URL.replace("{HTML_URL}", HTML_URL);
+            const res = await fetch(url + "?t=" + Date.now());
+            const html = await res.text();
+            const win = window.open('about:blank', '_blank');
+            win.document.write(html);
+            win.document.close();
+        }
+
+        async function downloadZone() {
+            if (!activeZone) return;
+            const url = activeZone.url.replace(""){HTML_URL}"};
+            const res = await fetch(url + "?t=" + Date.now());
+            const text = await res.text();
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([text], {type: 'text/html'}));
+            a.download = activeZone.name + '.html';
+            a.click();
+        }
+
+        // Popup
+        function openPopup(type) {
+            const body = document.getElementById('popupBody');
+            const title = document.getElementById('popupTitle');
+            
+            if (type === 'settings') {
+                title.textContent = 'Settings';
+                body.innerHTML = `
+                    <button class="settings-btn" onclick="openPopup('tabCloak')">🎭 Tab Cloak</button>
+                    <button class="settings-btn" onclick="openMathPractice()">📐 Math Practice Mode</button>`;
+            } else if (type === 'tabCloak') {
+                title.textContent = 'Tab Cloak';
+                body.innerHTML = `
+                    <div class="input-group">
+                        <label class="input-label">Tab Title</label>
+                        <input class="input-field" id="tabTitleInput" placeholder="Enter new title..." oninput="document.title=this.value||'Corte Math'">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Tab Icon URL</label>
+                        <input class="input-field" id="tabIconInput" placeholder="Enter icon URL..." oninput="changeIcon(this.value)">
+                    </div>`;
+            } else if (type === 'contact') {
+                title.textContent = 'Contact';
+                body.innerHTML = '<p><b>Discord:</b> https://discord.gg/NAFw4ykZ7n</p><p><b>Email:</b> gn.math.business@gmail.com</p>';
+            } else if (type === 'privacy') {
+                title.textContent = 'Privacy Policy';
+                body.innerHTML = '<p>Last updated April 17, 2025</p><p>This Privacy Notice for Corte Math describes how we process your information when using our services.</p>';
+            }
+            
+            document.getElementById('popupOverlay').classList.add('active');
+        }
+
+        function closePopup() {
+            document.getElementById('popupOverlay').classList.remove('active');
+        }
+
+        function changeIcon(url) {
+            let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+            link.rel = 'icon';
+            link.href = url || '/favicon.ico';
+            document.head.appendChild(link);
+        }
+
+        function exportData() {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([JSON.stringify(localStorage)], {type: 'text/plain'}));
+            a.download = Date.now() + '.data';
+            a.click();
+        }
+
+        // Math Practice
+        function openMathPractice() {
+            closePopup();
+            resetMathPractice();
+            document.getElementById('mathOverlay').classList.add('active');
+        }
+
+        function closeMathPractice() {
+            document.getElementById('mathOverlay').classList.remove('active');
+        }
+
+        function resetMathPractice() {
+            currentProblem = 0;
+            selectedAnswer = null;
+            showFeedback = false;
+            problemResults = [];
+            score = 0;
+            hintVisible = false;
+            renderProblem();
+        }
+
+        function renderProblem() {
+            const p = MATH_PROBLEMS[currentProblem];
+            document.getElementById('topicTitle').textContent = p.topic;
+            document.getElementById('questionText').textContent = p.question;
+            document.getElementById('equationText').textContent = p.equation;
+            document.getElementById('problemNum').textContent = currentProblem + 1;
+            document.getElementById('mathScore').textContent = score;
+            document.getElementById('mathStreak').textContent = streak;
+            document.getElementById('totalXp').textContent = xpPoints;
+            
+            // Dots
+            let dots = '';
+            for (let i = 0; i < 10; i++) {
+                let cls = 'problem-dot';
+                if (problemResults[i] === 'correct') cls += ' correct';
+                else if (problemResults[i] === 'wrong') cls += ' wrong';
+                else if (i === currentProblem) cls += ' current';
+                dots += `<div class="${cls}"></div>`;
+            }
+            document.getElementById('problemDots').innerHTML = dots;
+            
+            // Options
+            let opts = '';
+            const letters = ['A', 'B', 'C', 'D'];
+            p.options.forEach((opt, i) => {
+                let cls = 'answer-option';
+                if (showFeedback) cls += ' disabled';
+                if (selectedAnswer === i) cls += ' selected';
+                if (showFeedback && i === p.correct) cls += ' correct';
+                if (showFeedback && selectedAnswer === i && i !== p.correct) cls += ' wrong';
+                opts += `<button class="${cls}" onclick="selectAnswer(${i})">
+                    <span class="option-letter">${letters[i]}</span>${opt}
+                </button>`;
+            });
+            document.getElementById('answerOptions').innerHTML = opts;
+            
+            // Feedback
+            document.getElementById('feedbackArea').innerHTML = showFeedback ? 
+                `<div class="feedback-message ${selectedAnswer === p.correct ? 'correct' : 'wrong'}">
+                    ${selectedAnswer === p.correct ? '✓ Excellent work! You got it right!' : '✗ Not quite. The correct answer is ' + p.options[p.correct]}
+                </div>` : '';
+            
+            // Hint
+            document.getElementById('hintArea').innerHTML = hintVisible && !showFeedback ? 
+                `<div class="feedback-message correct" style="margin-bottom:20px">💡 <b>Hint:</b> ${p.hint}</div>` : '';
+            document.getElementById('hintBtn').textContent = hintVisible ? '💡 Hide Hint' : '💡 Show Hint';
+            document.getElementById('hintBtn').disabled = showFeedback;
+            
+            // Button
+            const btn = document.getElementById('submitBtn');
+            if (showFeedback) {
+                btn.textContent = currentProblem < 9 ? 'Next Problem →' : 'Complete!';
+                btn.onclick = nextProblem;
+                btn.disabled = currentProblem >= 9;
+            } else {
+                btn.textContent = 'Check Answer →';
+                btn.onclick = submitAnswer;
+                btn.disabled = selectedAnswer === null;
+            }
+        }
+
+        function selectAnswer(i) {
+            if (showFeedback) return;
+            selectedAnswer = i;
+            renderProblem();
+        }
+
+        function submitAnswer() {
+            if (selectedAnswer === null) return;
+            const correct = selectedAnswer === MATH_PROBLEMS[currentProblem].correct;
+            showFeedback = true;
+            problemResults[currentProblem] = correct ? 'correct' : 'wrong';
+            if (correct) {
+                score += 10;
+                xpPoints += 15;
+                streak++;
+            } else {
+                streak = 0;
+            }
+            document.getElementById('xpDisplay').textContent = xpPoints;
+            document.getElementById('streakDisplay').textContent = streak;
+            renderProblem();
+        }
+
+        function nextProblem() {
+            if (currentProblem < 9) {
+                currentProblem++;
+                selectedAnswer = null;
+                showFeedback = false;
+                hintVisible = false;
+                renderProblem();
+            }
+        }
+
+        function toggleHint() {
+            hintVisible = !hintVisible;
+            renderProblem();
+        }
+
+        // Keyboard shortcut: Ctrl+Shift+F
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'F') {
+                e.preventDefault();
+                openMathPractice();
+            }
+            if (e.key === 'Escape') {
+                closeMathPractice();
+                closeZone();
+            }
+        });
+
+        // Init
+        loadZones();
+    </script>
+</body>
+</html>
